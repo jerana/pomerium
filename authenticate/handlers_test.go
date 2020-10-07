@@ -150,8 +150,11 @@ func TestAuthenticate_SignIn(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 
+			sharedCipher, _ := cryptutil.NewAEADCipherFromBase64(cryptutil.NewBase64Key())
+
 			a := &Authenticate{
 				state: newAtomicAuthenticateState(&authenticateState{
+					sharedCipher:     sharedCipher,
 					sessionStore:     tt.session,
 					redirectURL:      uriParseHelper("https://some.example"),
 					sharedEncoder:    tt.encoder,
